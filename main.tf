@@ -20,6 +20,10 @@ terraform {
 # DEPLOY THE VAULT SERVER CLUSTER
 # ---------------------------------------------------------------------------------------------------------------------
 
+locals {
+  gcs_bucket_name = "${var.vault_cluster_name}-${random_id.bucket.hex}"
+}
+
 data "google_compute_image" "image" {
   project = "${var.gcp_project_id}"
   family  = "vault-consul"
@@ -47,7 +51,7 @@ module "vault_cluster" {
   source_image   = "${data.google_compute_image.image.name}"
   startup_script = "${data.template_file.startup_script_vault.rendered}"
 
-  gcs_bucket_name          = "${var.vault_cluster_name}-${random_id.bucket.hex}"
+  gcs_bucket_name          = "${local.gcs_bucket_name}"
   gcs_bucket_location      = "${var.gcs_bucket_location}"
   gcs_bucket_storage_class = "${var.gcs_bucket_class}"
   gcs_bucket_force_destroy = "${var.gcs_bucket_force_destroy}"
@@ -71,7 +75,7 @@ data "template_file" "startup_script_vault" {
 
   vars {
     consul_cluster_tag_name = "${var.consul_server_cluster_name}"
-    vault_cluster_tag_name  = "${var.vault_cluster_name}"
+    gcs_bucket_name         = "${local.gcs_bucket_name}"
     enable_vault_ui         = "${var.enable_vault_ui ? "--enable-ui" : ""}"
   }
 }

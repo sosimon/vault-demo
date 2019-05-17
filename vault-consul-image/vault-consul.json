@@ -27,7 +27,7 @@
     "inline": ["mkdir -p /tmp/terraform-google-vault/modules"]
   },{
     "type": "file",
-    "source": "{{template_dir}}/../../modules/",
+    "source": "{{template_dir}}/../modules/",
     "destination": "/tmp/terraform-google-vault/modules",
     "pause_before": "30s"
   },{
@@ -79,6 +79,16 @@
       " /tmp/terraform-google-consul/modules/install-consul/install-consul --version {{user `consul_version`}}",
       "fi",
       "/tmp/terraform-google-consul/modules/install-dnsmasq/install-dnsmasq"
+    ]
+  },{
+    "type": "shell",
+    "inline": [
+      "sudo apt-add-repository universe",
+      "sudo apt-get update",
+      "sudo apt install -y python-google-compute-engine || echo \"Not available: python-google-compute-engine\"",
+      "sudo apt install -y python3-google-compute-engine || echo \"Not available: python3-google-compute-engine\"",
+      "sudo apt install -y google-compute-engine-oslogin || echo \"Not available: google-compute-engine-oslogin\"",
+      "sudo apt install -y gce-compute-image-packages || echo \"Not available: gce-compute-image-packages\""
     ]
   }]
 }
