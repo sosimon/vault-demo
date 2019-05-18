@@ -3,9 +3,9 @@
   "variables": {
     "project_id": null,
     "zone": null,
-    "vault_version": "0.11.5",
+    "vault_version": "1.1.2",
     "consul_module_version": "v0.3.1",
-    "consul_version": "1.3.1",
+    "consul_version": "1.5.0",
     "consul_download_url": "{{env `CONSUL_DOWNLOAD_URL`}}",
     "vault_download_url": "{{env `VAULT_DOWNLOAD_URL`}}",
     "ca_public_key_path": null,
@@ -79,16 +79,6 @@
       " /tmp/terraform-google-consul/modules/install-consul/install-consul --version {{user `consul_version`}}",
       "fi",
       "/tmp/terraform-google-consul/modules/install-dnsmasq/install-dnsmasq"
-    ]
-  },{
-    "type": "shell",
-    "inline": [
-      "sudo apt-add-repository universe",
-      "sudo apt-get update",
-      "sudo apt install -y python-google-compute-engine || echo \"Not available: python-google-compute-engine\"",
-      "sudo apt install -y python3-google-compute-engine || echo \"Not available: python3-google-compute-engine\"",
-      "sudo apt install -y google-compute-engine-oslogin || echo \"Not available: google-compute-engine-oslogin\"",
-      "sudo apt install -y gce-compute-image-packages || echo \"Not available: gce-compute-image-packages\""
     ]
   }]
 }

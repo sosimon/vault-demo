@@ -67,6 +67,9 @@ module "vault_cluster" {
   allowed_inbound_cidr_blocks_api = []
 
   allowed_inbound_tags_api = ["${var.consul_server_cluster_name}"]
+
+  use_external_service_account = true
+  service_account_email        = "vault-sa@${var.gcp_project_id}.iam.gserviceaccount.com"
 }
 
 # Render the Startup Script that will run on each Vault Instance on boot. This script will configure and start Vault.
@@ -77,5 +80,9 @@ data "template_file" "startup_script_vault" {
     consul_cluster_tag_name = "${var.consul_server_cluster_name}"
     gcs_bucket_name         = "${local.gcs_bucket_name}"
     enable_vault_ui         = "${var.enable_vault_ui ? "--enable-ui" : ""}"
+    auto_unseal_project     = "${var.gcp_project_id}"
+    auto_unseal_region      = "us-west1"
+    auto_unseal_key_ring    = "vault-keyring"
+    auto_unseal_crypto_key  = "vault-crypto-key"
   }
 }

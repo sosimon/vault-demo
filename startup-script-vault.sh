@@ -16,4 +16,13 @@ readonly VAULT_TLS_KEY_FILE="/opt/vault/tls/vault.key.pem"
 
 # Note that any variables below with <dollar-sign><curly-brace><var-name><curly-brace> are expected to be interpolated by Terraform.
 /opt/consul/bin/run-consul --client --cluster-tag-name "${consul_cluster_tag_name}"
-/opt/vault/bin/run-vault --gcs-bucket ${gcs_bucket_name} --tls-cert-file "$VAULT_TLS_CERT_FILE" --tls-key-file "$VAULT_TLS_KEY_FILE" ${enable_vault_ui}
+/opt/vault/bin/run-vault \
+    --gcs-bucket ${gcs_bucket_name} \
+    --tls-cert-file "$VAULT_TLS_CERT_FILE" \
+    --tls-key-file "$VAULT_TLS_KEY_FILE" \
+    --enable-auto-unseal \
+    --auto-unseal-key-project-id ${auto_unseal_project} \
+    --auto-unseal-key-region ${auto_unseal_region} \
+    --auto-unseal-key-ring ${auto_unseal_key_ring} \
+    --auto-unseal-crypto-key-name ${auto_unseal_crypto_key} \
+    ${enable_vault_ui}
